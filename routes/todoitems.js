@@ -65,4 +65,67 @@ router.post('/', function (req, res, next) {
   });
 });
 
+router.put('/check', (req, res, next) => {
+  req.app.locals.con.connect(function (err) {
+    if (err) {
+      console.log(err);
+    }
+
+    let todoId = Number(req.body.todoId);
+    let userId = Number(req.body.userId);
+    let isCompleted = req.body.isCompleted;
+    let sql = `UPDATE todoitems SET isCompleted="${isCompleted}" WHERE todoId=${todoId} AND userId=${userId}`;
+
+    req.app.locals.con.query(sql, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('result', result);
+      res.send(result);
+    });
+  });
+});
+router.put('/', (req, res, next) => {
+  req.app.locals.con.connect(function (err) {
+    if (err) {
+      console.log(err);
+    }
+
+    let todoId = Number(req.body.todoId);
+    let userId = Number(req.body.userId);
+    let isCompleted = req.body.isCompleted;
+    let todoText = req.body.todoText;
+    let sql = `UPDATE todoitems SET isCompleted="${isCompleted}", todoText="${todoText}" WHERE todoId=${todoId} AND userId=${userId}`;
+
+    req.app.locals.con.query(sql, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('result', result);
+      res.send(result);
+    });
+  });
+});
+
+router.delete('/', (req, res, next) => {
+  req.app.locals.con.connect(function (err) {
+    if (err) {
+      console.log(err);
+    }
+
+    let todoId = Number(req.body.todoId);
+    let userId = Number(req.body.userId);
+
+    let sql = `DELETE FROM todoitems WHERE todoId=${todoId} AND userId=${userId}`;
+
+    req.app.locals.con.query(sql, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('result', result);
+      res.send(result);
+    });
+  });
+});
+
 module.exports = router;
