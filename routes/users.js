@@ -32,7 +32,7 @@ router.get('/:id', function (req, res, next) {
     }
 
     // GET userName & userEmail from all users
-    let sql = `SELECT userName, userEmail FROM users WHERE userId="${userId}"`;
+    let sql = `SELECT userId, userName, userEmail FROM users WHERE userId="${userId}"`;
 
     req.app.locals.con.query(sql, function (err, result) {
       if (err) {
@@ -86,7 +86,7 @@ router.post('/login', (req, res, next) => {
     let userName = req.body.userName;
     let userEmail = req.body.userEmail;
 
-    let sql = `SELECT userId FROM users WHERE userName="${userName}" AND userEmail="${userEmail}"`;
+    let sql = `SELECT userId, userName FROM users WHERE userName="${userName}" AND userEmail="${userEmail}"`;
 
     req.app.locals.con.query(sql, function (err, result) {
       if (err) {
@@ -98,7 +98,7 @@ router.post('/login', (req, res, next) => {
           message: 'Login failed, user name or email does not exist.',
         });
       } else {
-        res.send(result);
+        res.json(result);
       }
     });
   });
